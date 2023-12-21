@@ -24,7 +24,19 @@ const client = new MongoClient(uri, {
       await client.connect();
 
       const userCollection = client.db('SccTastMenagement').collection("users")
-      // Send a ping to confirm a successful connection
+      const userAllTast = client.db('SccTastMenagement').collection("allTask")
+     
+
+        //   -------------------------------ALL TASK API-----------------------------------
+       app.get('/alltask', async(req, res)=>{
+        const result = await userAllTast.find().toArray()
+        res.send(result)
+       })
+        app.post('/alltask', async(req, res)=>{
+        const result = await userAllTast.insertOne(req.body)
+        res.send(result)
+       })
+        //   -------------------------------USER API-----------------------------------
         app.get('/user', async(req, res)=>{
             const result = await userCollection.find().toArray()
             res.send(result)
@@ -48,8 +60,6 @@ const client = new MongoClient(uri, {
   }
   
 run().catch(console.dir);
-
-
 app.get('/', (req, res)=>{
     res.send('start the scc task menagement')
 })
